@@ -35,9 +35,9 @@ IN src_code directory the following files
 should be edited specific to the run
 intendend
 
-params.py: SET ALL MODEL PARAMATERS, THIS IS USED IN ALL 3 PROCESSES RUN (ICs,main,fronto_tendency)
+params.py: SET ALL MODEL PARAMATERS, THIS IS USED IN ALL 2 PROCESSES RUN (TTTW_set_IC.py,TTTW_main.py)
 
-create_forcings.py: SET TYPE OF TIME SERIES OF FORCING TO BE USED, MUST LINE UP WITH tseries OPTIONS IN params_kpp.py
+create_forcings.py: SET TYPE OF TIME SERIES OF FORCING TO BE USED, MUST LINE UP WITH tseries OPTIONS IN params.py
 
 
 
