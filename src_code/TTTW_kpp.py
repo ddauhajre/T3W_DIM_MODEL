@@ -1,5 +1,11 @@
-#####################################
-# TTTW_kpp.py
+######################################
+
+__title__          = "TTTW_kpp.py"
+__author__         = "Daniel Dauhajre"
+__date__           = "September 2017"
+__email__          = "ddauhajre@atmos.ucla.edu"
+__python_version__ = "2.7.9"
+
 '''
 KPP paramterization implentend for
 TTTW system (z-level vertical coordinate system,
@@ -7,10 +13,9 @@ model domain dimensions)
 
 Based off of ROMS working group
 KPP July 2015
-'''
 
-# DANIEL DAUHAJRE, UCLA JULY 2015
-#####################################
+'''
+######################################
 
 
 ######################################
@@ -193,25 +198,12 @@ class TTTW_KPP(object):
         self.r4 = 0.25
        
         self.nu0ml = 0.5 # mixed layer convective adjustment for diffusivty
-       
-        # testing for iterative solution
-        #self.my_Kv_bak = 1E-3
-        #self.my_Kt_bak = 1E-3
- 
-        # OLD VALUES
-        #self.my_Kv_bak = 1E-6 #background viscosity/diffusivity
-        #self.my_Kt_bak = 1E-5 # background viscosity/diffusivity
-       
+      
         self.my_Kv_bak = 1E-4
         self.my_Kt_bak = 1E-4
     
 
-        # TESTING
-	#self.Zob = 0.55
         self.Zob =1E-2 
-        #self.Zob = 1E-8 #testing r_D values
-        #self.C_D = 1E-2 # bulk drag coefficient        
-
 
         # PARAMETER FOR GAUSSIAN SMOOTHING OF FIELDS
         self.sigma_gauss = 3
@@ -220,9 +212,7 @@ class TTTW_KPP(object):
         self.Cg = self.Cstar * self.vonKar * (self.c_s*self.vonKar * self.epssfcs) **(1./3.)
         self.Vtc = self.Cv * np.sqrt(-self.betaT/(self.c_s*self.epssfcs)) / (self.Ricr*self.vonKar**2) 
 
-
-        #self.V0 = 0.1 #corrective term for Vtsq
-   
+  
 
     ###############################################
     # FUNCTIONS TO CALCULATE SOME TERMS FOR
@@ -241,8 +231,7 @@ class TTTW_KPP(object):
         z_u_r = self.grid_dict['z_u_r'][:,:]
         [Ly,N] = b.shape
 
-        # BVF AT W-levels (according to ROMS)
-        # but top and bottom just same bvf[:,-2] and bvf[:,1] respectively
+
         self.bvf = np.zeros([Ly,N+1])
         rho_atw = TTTW_func.rho2w(rho)
         for k in range(N-1):
@@ -315,11 +304,6 @@ class TTTW_KPP(object):
         self.FC     = np.zeros([Ly,N+1])
         self.swdk_r = np.zeros([Ly,N+1])
  
-        #DEBUGGING Cr
-        #self.out1 = np.zeros([Ly,N+1])
-        #self.out2 = np.zeros([Ly,N+1])
-        #self.out3 = np.zeros([Ly,N+1])
-        #self.out4 = np.zeros([Ly,N+1])
         self.zscale = np.zeros([Ly,N])
         self.Kern = np.zeros([Ly,N])
 
@@ -337,11 +321,6 @@ class TTTW_KPP(object):
             # SEARCH FOR MIXED LAYER DEPTH
             self.FC[j,-1] = 0.
 
-
-            #self.out1[j,-1] = 0
-            #self.out2[j,-1] = 0
-            #self.out3[j,-1] = 0                    
-            
 
             # ---> LOOP TOP TO BOTTOM (FORTRAN ==> k=N-1,1,-1)
             for k in range(N-1,0,-1):
@@ -364,17 +343,6 @@ class TTTW_KPP(object):
 
 
                 self.Kern[j,k_w] = Kern
-                # in lmd_kpp.F they go to rho-points in this
-                # not necessary here, u at rho-points and v_upts defined above
-                 
-                #self.out1[j,k_w] = self.out1[j,k_w+1] + Kern * (( (v_upts[j,k_r+1] - v_upts[j,k_r])**2) / (Hz[j,k_r] + Hz[j,k_r+1]))
-
-
-                #self.out1[j,k_w] = self.out1[j,k_w+1] + Kern * ( ((u[j,k_r+1] - u[j,k_r])**2 + (v_upts[j,k_r+1] - v_upts[j,k_r])**2) / (Hz[j,k_r] + Hz[j,k_r+1]))
-
-                #self.out2[j,k_w] = self.out2[j,k_w+1] + Kern * ( -0.5 * (Hz[j,k_r]+Hz[j,k_r+1]) * (self.Ri_inv * self.bvf[j,k_w]))
-                #self.out3[j,k_w] = self.out3[j,k_w+1] + Kern * (-0.5 * (Hz[j,k_r] + Hz[j,k_r+1]) * (self.C_Ek * self.f[j] * self.f[j]))
-
                 self.FC[j,k_w] = self.FC[j,k_w+1] + Kern * (\
                                      ( ( u[j,k_r+1] - u[j,k_r] )**2 + ( v_upts[j,k_r+1] - v_upts[j,k_r])**2 ) \
                                      / (Hz[j,k_r] + Hz[j,k_r+1]) \
@@ -390,7 +358,6 @@ class TTTW_KPP(object):
                                                                  
                      # fortran equivlanet ===> k=N,1,-1                   
                      for k in range(N,0,-1):
-                     #for k in range((N+1)-1,-1,-1):
                          # INDEX MAP
                          k_r = k-1
                          k_w = k
@@ -406,8 +373,7 @@ class TTTW_KPP(object):
      			 self.ws = self.lmd_wscale_ws_only(Bfsfc, zscale,self.hbls_old[j],self.ustar[j])
                            
                          self.Vtsq = self.Vtc * self.ws* self.bvf_max + self.V0
-                         #self.out4[j,k_w] = self.Vtsq #debugging
-                        
+                       
 
                          self.Cr[j,k_w] = self.FC[j,k_w] + self.Vtsq
                         
@@ -656,7 +622,7 @@ class TTTW_KPP(object):
 
     def get_wm_ws_Gx_bot(self):
         """ Compute turbulent velocity scales and Gx for bottom kpp"""
-            # BASICALLY SETS self.Gm1_bot, self.dGm1_dS_bot, self.Gt1_bot, self.dGt1_dS_bot 
+        # BASICALLY SETS self.Gm1_bot, self.dGm1_dS_bot, self.Gt1_bot, self.dGt1_dS_bot 
         z_u_r = self.grid_dict['z_u_r']
         z_u_w = self.grid_dict['z_u_w']
         [Ly,N] = self.b.shape
