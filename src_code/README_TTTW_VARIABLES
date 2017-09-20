@@ -1,0 +1,79 @@
+######################################
+# DETAILS OF TTTW VARIABLES IN CODE
+# units, size, etc
+####################################
+
+!!!! DOMAIN SIZE VARIABLES !!!
+Ly --> number of points in  y-direction
+N  --> number of vertical rho-levels (N+1 = number of vertical w-levels)
+
+!!!!! GRIDS !!!!!!
+y_u_r ---> [Ly,N] y-grid at u and rho levels
+y_u_w --> [Ly,N+1] y-grid at u and w-levels
+y_v_w --> [Ly+1,N+1] y-grid at v and w-levels
+y_v_r --> [Ly+1,N] y-grid at v and rho-levels
+z_u_r ---> [Ly,N] z-grid at u and rho levels
+z_u_w ---> [Ly,N+1] z-grid at u and w levels
+z_v_w ---> [Ly+1,N+1] z-grid at v and w-levels
+z_v_r --> [Ly+1,N] z-grid at v and rho levels
+
+
+!!!!! CONSTANTS !!!!!!!
+rho0           ---> reference density (kg/m^3)
+g              ---> graviational accelration (m/s^2)
+coriolis_param ---> rotation rate (1/s)
+alpha          ---> thermal expansion coefficient of sewater  (1/K)
+Cp             ---> specific heat of seawater (J/kg*K)
+Zob            ---> roughness height (m)
+Dh             ---> horizontal diffusivity (m^2/s)
+
+
+!!! DYNAMICAL VARIABLES !!!
+##########################################################
+	 	STAGGERED GRID CONVETIONS
+b,u: placed at horizontal u-points and vertical rho-levels
+v: placed at horizontal v-points and vertical rho-levels
+Kv,Kt: placed at horizontal u-points and vertical w-levels
+sustr,bustr: placed at horizontal u-points
+svstr,bvstr: placed at horiztonal v-points
+##########################################################
+!!!! VARIABLES USED IN DISCRETIZATION OF SYSTEM EQUATIONS !!!
+b     --> [Ly,N] buoyancy (m/s^2)
+u     --> [Ly,N] x-component of velocity (m/s)
+v     --> [Ly,N] y-component of velocity (m/s)
+Kv    --> [Ly,N+1] vertical mixing coefficient for momentum (m^2/s)
+Kt    --> [Ly,N+1] vertical mixing coefficient for buoyancy (m^2/s)
+Dh_arr---> [Ly+1,N] horizontal diffusive coefficient (m^2/s)
+sustr --> [Ly] x-component of wind stress (normalized by rho0) (m^2/s^2)
+svstr --> [Ly+1] y-component of wind stress (normaized by rho0) (m^2/s^2)
+bustr --> [Ly] x-component of bottom stress (normalized by rho0) (m^2/s^2)
+bvstr --> [Ly+1] y-component of bottom stress (normaized by rho0) (m^2/s^2)
+Bfsfc --> [Ly] surface buoyancy flux (m/s^3)
+			--> this term can be prescribed via a surface
+                            heat flux (Q (W/m^2)) and then calcualted
+                            as follows: Bfsfc = (Q *g * alpha) / (rho0 * Cp)
+
+
+
+
+!!!!!!! SWITCHES FOR TIME STEPPING !!!!!!!!!!
+advect_bool    ---> (True/False) switch to turn buoyancy advection on/off
+diurnal_method ---> (str): type of curve to use fo the diurnal cycle (e.g. step, sine,sigmoid,etc)
+mix_in_time    ---> (True/False) have K evolve in time or not (either via KPP or idealized time series)
+bottom_stress  ---> (True/False) apply bottom stress to momentum equation 
+K_choice       ---> 'KPP' or 'IDEAL': use KPP module to compute mixing coefficients or create own
+horiz_diff     ---> (True/False): turn on horizontal diffusion
+
+
+!!!!!!!! SIMULATION TIME/TIME STEP / GRID SIZE !!!!!!!!
+dy_m      ---> horizontal spacing in meters
+Ly_m      ---> length of horizontal axis in meters
+Lz_m      ---> length of vertical axis in meters
+dz_m      ---> vertical grid spacing in meters (equal spacing btween rho/w-levels)
+dt_min    ---> time step in minutes
+dt        ---> time step in seconds
+tend_days ---> length of simulation time (in days)
+
+
+
+

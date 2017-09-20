@@ -1,0 +1,48 @@
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	T^3W PACKAGE 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+PARAMETERS SET IN THIS CODE (/src_code/params.py)
+WILL RUN THE L1 S_Solar solution in
+Dauhajre and McWilliams (2017)
+
+
+############################
+INSTRUCTIONS ON HOW TO RUN
+############################
+- ALL FILES NECESSARY FOR MODEL TO RUN ARE IN /src_code directory
+- use run_TTTW.sh to run a simulation 
+	---> this will run 2 main jobs
+		1) TTTW_set_IC.py = iterate to get consistent initial conditons
+ 					    between steady state TTW and KPP
+ 		2) TTTW_main.py = timestep to evolve fields via TTTW
+				      saves netcdf output in /nc_files directory
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+FOR CLARIFICATION ON ANY TTTW MODEL PARAMTERS/VARIABLES
+LOOK AT README_TTTW_VARIABLES in src_code directory
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+#############################################
+WHAT TO EDIT/SET BEFORE STARTING A SIMULATION
+#############################################
+
+run_TTTW.sh : NEED TO DECLARE SWITCH FOR IC (make_IC=true/false) 
+	      if you've already made ICs and have them stored in /ICS, then make_IC=false
+
+IN src_code directory the following files
+should be edited specific to the run
+intendend
+
+params.py: SET ALL MODEL PARAMATERS, THIS IS USED IN ALL 3 PROCESSES RUN (ICs,main,fronto_tendency)
+
+create_forcings.py: SET TYPE OF TIME SERIES OF FORCING TO BE USED, MUST LINE UP WITH tseries OPTIONS IN params_kpp.py
+
+
+
+
+
+
+
+
