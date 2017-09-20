@@ -55,22 +55,11 @@ Bfsfc --> [Ly] surface buoyancy flux (m/s^3)
 
 
 
-
-!!!!!!! SWITCHES FOR TIME STEPPING !!!!!!!!!!
-advect_bool    ---> (True/False) switch to turn buoyancy advection on/off
-diurnal_method ---> (str): type of curve to use fo the diurnal cycle (e.g. step, sine,sigmoid,etc)
-mix_in_time    ---> (True/False) have K evolve in time or not (either via KPP or idealized time series)
-bottom_stress  ---> (True/False) apply bottom stress to momentum equation 
-K_choice       ---> 'KPP' or 'IDEAL': use KPP module to compute mixing coefficients or create own
-horiz_diff     ---> (True/False): turn on horizontal diffusion
-
-
 !!!!!!!! SIMULATION TIME/TIME STEP / GRID SIZE !!!!!!!!
 dy_m      ---> horizontal spacing in meters
 Ly_m      ---> length of horizontal axis in meters
 Lz_m      ---> length of vertical axis in meters
 dz_m      ---> vertical grid spacing in meters (equal spacing btween rho/w-levels)
-dt_min    ---> time step in minutes
 dt        ---> time step in seconds
 tend_days ---> length of simulation time (in days)
 
